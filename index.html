@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compare Algorithms</title>
+</head>
+
+<style>
+    table {
+        min-width: 200px;
+    }
+
+    .row {
+        width: 100%;
+        display: flex;
+        
+    }
+
+    .inputs {
+        margin: 1em 0;
+        display: grid;
+    }
+
+    .red {
+        color: red
+    }
+
+    .green {
+        color: green
+    }
+
+    .yellow {
+        color: yellow
+    }
+</style>
+
+<body>
+    <button id="first-button" onclick="firstAlgorithm()">Test First</button>
+    <button id="second-button" onclick="secondAlgorithm()">Test Second</button>
+    <button id="auto-test" onclick="runAutoTests()">Auto</button>
+    <button id="clear" onclick="clear()">Clear Table</button>
+
+
+    <div class="inputs">
+        <label for="first-algorithm">First Algorithm</label>
+        <textarea id="first-algorithm" rows="15" cols="40">
+function algorithm(n) {
+    for (i = 0; i <= n; i++ ) { console.warn(i) }
+} 
+
+algorithm(1000)
+        </textarea>
+    
+        <label for="second-algorithm"> Second Algorithm</label>
+        <textarea id="second-algorithm" rows="15" cols="40">
+function algorithm(n) {
+    for (i = 0; i <= n; i++ ) { console.warn(i) }
+} 
+
+algorithm(10000)
+        </textarea>
+    </div>
+
+    <div class="row">
+        <table id="first">
+            <thead>
+                <tr>
+                    <th>FIRST</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <table id="second">
+            <thead>
+                <tr>
+                    <th>SECOND</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+
+<script>
+
+    function getAlgorithms() {
+        const first = document.getElementById("first-algorithm").value
+        const second = document.getElementById("second-algorithm").value
+
+        return {
+            first: first || console.warn("No algorithm 1"), 
+            second: second || console.warn("No algorithm 2")
+        }
+    }
+    
+    function clear() {
+        console.warn("entrou")
+        const firstTable = document.getElementById("first").getElementsByTagName('tbody')[0]
+        const secondTable = document.getElementById("second").getElementsByTagName('tbody')[0]
+
+        while(firstTable.children.length > 0) {
+            firstTable.deleteRow(0);
+        }
+
+        while(secondTable.children.length > 0) {
+            secondTable.deleteRow(0);
+        }
+    }
+
+    function firstAlgorithm() {
+        const startTimer = window.performance.now();
+
+        // START
+        eval(getAlgorithms().first)
+        // END
+
+        const endTimer = window.performance.now();
+        document.getElementById("first").getElementsByTagName('tbody')[0].insertRow().insertCell(0).innerHTML = endTimer - startTimer;
+        colorTable("first")
+    }
+
+    function secondAlgorithm() {
+    
+        const startTimer = window.performance.now();
+
+        // START
+        eval(getAlgorithms().second)
+        // END
+
+        const endTimer = window.performance.now();
+        document.getElementById("second").getElementsByTagName('tbody')[0].insertRow().insertCell(0).innerHTML = endTimer - startTimer;
+        colorTable("second")
+    }
+
+    function colorTable(clickedId) {
+        const oppositeId = clickedId === "first" ? "second" : "first"
+        const currentRow = document.getElementById(clickedId).getElementsByTagName('tbody')[0]
+        const currentRowValue = currentRow.rows[currentRow.rows.length - 1]?.getElementsByTagName("td")[0]
+
+        const oppositeRow = document.getElementById(oppositeId).getElementsByTagName('tbody')[0]
+        const oppositeRowValue = oppositeRow.rows[currentRow.rows.length - 1]?.getElementsByTagName("td")[0]
+
+        if (currentRowValue && oppositeRowValue) {
+            if (parseInt(currentRowValue.innerHTML) > parseInt(oppositeRowValue.innerHTML)) {
+                currentRowValue.classList.add("red")
+                oppositeRowValue.classList.add("green")
+            } else if (currentRowValue.innerHTML === oppositeRowValue.innerHTM) {
+                currentRowValue.classList.add("yellow")
+                oppositeRowValue.classList.add("yellow")
+            } else {
+                currentRowValue.classList.add("green")
+                oppositeRowValue.classList.add("red")
+            }
+        }
+    }
+
+    function runAutoTests() {
+        for (let i = 0; i < 30; i++) {
+            if (i % 2) {
+                setTimeout(function() { firstAlgorithm() }, i * 700)
+            } else {
+                setTimeout(function() { secondAlgorithm() }, i * 700)
+            }
+        }
+    }
+
+</script>
+
+</html>
