@@ -39,7 +39,7 @@
     <button id="first-button" onclick="firstAlgorithm()">Test First</button>
     <button id="second-button" onclick="secondAlgorithm()">Test Second</button>
     <button id="auto-test" onclick="runAutoTests()">Auto</button>
-    <button id="clear" onclick="clear()">Clear Table</button>
+    <button id="clear" onclick="clearTable()">Clear Table</button>
 
 
     <div class="inputs">
@@ -58,7 +58,7 @@ function algorithm(n) {
     for (i = 0; i <= n; i++ ) { console.warn(i) }
 } 
 
-algorithm(10000)
+algorithm(5000)
         </textarea>
     </div>
 
@@ -97,8 +97,7 @@ algorithm(10000)
         }
     }
     
-    function clear() {
-        console.warn("entrou")
+    function clearTable() {
         const firstTable = document.getElementById("first").getElementsByTagName('tbody')[0]
         const secondTable = document.getElementById("second").getElementsByTagName('tbody')[0]
 
@@ -145,23 +144,23 @@ algorithm(10000)
         const oppositeRowValue = oppositeRow.rows[currentRow.rows.length - 1]?.getElementsByTagName("td")[0]
 
         if (currentRowValue && oppositeRowValue) {
-            if (parseInt(currentRowValue.innerHTML) > parseInt(oppositeRowValue.innerHTML)) {
-                currentRowValue.classList.add("red")
-                oppositeRowValue.classList.add("green")
-            } else if (currentRowValue.innerHTML === oppositeRowValue.innerHTM) {
-                currentRowValue.classList.add("yellow")
-                oppositeRowValue.classList.add("yellow")
+            if (parseFloat(currentRowValue.innerHTML) > parseFloat(oppositeRowValue.innerHTML)) {
+                currentRowValue.style.color = "red"
+                oppositeRowValue.style.color = "green"
             } else {
-                currentRowValue.classList.add("green")
-                oppositeRowValue.classList.add("red")
+                currentRowValue.style.color = "green"
+                oppositeRowValue.style.color = "red"
             }
+        } else {
+            if (currentRowValue) currentRowValue.style.color = "mediumblue"
+            if (oppositeRowValue) oppositeRowValue.style.color = "mediumblue"
         }
     }
 
     function runAutoTests() {
-        for (let i = 0; i < 30; i++) {
+        for (let i = 0; i < 20; i++) {
             if (i % 2) {
-                setTimeout(function() { firstAlgorithm() }, i * 700)
+                setTimeout(function() { firstAlgorithm() }, i * 500)
             } else {
                 setTimeout(function() { secondAlgorithm() }, i * 700)
             }
